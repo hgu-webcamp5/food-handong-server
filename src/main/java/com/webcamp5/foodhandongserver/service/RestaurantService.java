@@ -35,9 +35,34 @@ public class RestaurantService {
         Restaurant restaurantToCreate = new Restaurant();
         BeanUtils.copyProperties(restaurant, restaurantToCreate);
         return restaurantRepository.save(restaurantToCreate);
+
     }
 
     public void deleteRestaurant(Long id) {
         restaurantRepository.deleteById(id);
+    }
+
+    public Restaurant updateRestaurant(Long id,RestaurantCreationRequest request){
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
+        if(!optionalRestaurant.isPresent()){
+            throw new EntityNotFoundException(
+                    "restaurant not present in the database");
+        }
+
+        Restaurant restaurant = optionalRestaurant.get();
+
+//        restaurant.setCategoryId(request.getCategoryId());
+        restaurant.setContact(request.getContact());
+        restaurant.setDong(request.getDong());
+        restaurant.setImageUrl(request.getImageUrl());
+        restaurant.setLatitude(request.getLatitude());
+        restaurant.setLongitude(request.getLongitude());
+        restaurant.setLocation(request.getLocation());
+        restaurant.setName(request.getName());
+        restaurant.setOfficialName(request.getOfficialName());
+        restaurant.setOpeningHours(request.getOpeningHours());
+
+        return restaurantRepository.save(restaurant);
+
     }
 }

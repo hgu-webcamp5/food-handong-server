@@ -32,9 +32,15 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.createRestaurant(request));
     }
 
-    @DeleteMapping("/book/{restaurantId}")
+    @DeleteMapping("/restaurant/{restaurantId}")
     public ResponseEntity<Void> deleteRestaurant(@PathVariable Long restaurantId) {
         restaurantService.deleteRestaurant(restaurantId);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/restaurant/{restaurantId}")
+    public ResponseEntity<Restaurant> updateRestaurant(@RequestBody RestaurantCreationRequest request , @PathVariable Long restaurantId){
+        return ResponseEntity.ok(restaurantService.updateRestaurant(restaurantId, request));
+    }
+
 }
