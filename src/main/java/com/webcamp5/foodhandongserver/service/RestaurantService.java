@@ -1,7 +1,9 @@
 package com.webcamp5.foodhandongserver.service;
 
+import com.webcamp5.foodhandongserver.model.Category;
 import com.webcamp5.foodhandongserver.model.Restaurant;
 import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
+import com.webcamp5.foodhandongserver.repository.CategoryRepository;
 import com.webcamp5.foodhandongserver.repository.RestaurantRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
+    private final CategoryRepository categoryRepository;
 
     public Restaurant readRestaurant(Long id) {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
@@ -32,8 +35,15 @@ public class RestaurantService {
 
     public Restaurant createRestaurant(RestaurantCreationRequest restaurant) {
 
+        Optional<Category> category = categoryRepository.findById(restaurant.getCategoryId());
+        if(!category.isPresent()){
+            throw new EntityNotFoundException(
+                    "Category Not Found");
+        }
+
         Restaurant restaurantToCreate = new Restaurant();
         BeanUtils.copyProperties(restaurant, restaurantToCreate);
+        restaurantToCreate.setCategory(category.get());
         return restaurantRepository.save(restaurantToCreate);
 
     }
@@ -61,6 +71,9 @@ public class RestaurantService {
         restaurant.setName(request.getName());
         restaurant.setOfficialName(request.getOfficialName());
         restaurant.setOpeningHours(request.getOpeningHours());
+
+        Optional<Category> category = categoryRepository.findById(request.getCategoryId());
+        restaurant.setCategory(category.get());
 
         return restaurantRepository.save(restaurant);
 
