@@ -3,6 +3,7 @@ package com.webcamp5.foodhandongserver.service;
 import com.webcamp5.foodhandongserver.model.Restaurant;
 import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
 import com.webcamp5.foodhandongserver.repository.RestaurantRepository;
+import com.webcamp5.foodhandongserver.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -16,7 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
-
     public Restaurant readRestaurant(Long id) {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (restaurant.isPresent()) {
