@@ -7,6 +7,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +33,9 @@ public class ReviewService {
     public Review createReview(ReviewCreationRequest review) {
         Review reviewToCreate = new Review();
         BeanUtils.copyProperties(review, reviewToCreate);
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        reviewToCreate.setCreatedTime(timestamp);
         return reviewRepository.save(reviewToCreate);
     }
 
