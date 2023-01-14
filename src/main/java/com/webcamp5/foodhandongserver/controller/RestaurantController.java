@@ -38,4 +38,10 @@ public class RestaurantController {
         restaurantService.deleteRestaurant(restaurantId);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/restaurant/{restaurantId}")
+    public ResponseEntity<Restaurant> updateRestaurant(@RequestBody RestaurantCreationRequest request , @PathVariable Long restaurantId){
+        return ResponseEntity.ok(restaurantService.updateRestaurant(restaurantId, request));
+    }
+
 }
