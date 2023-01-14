@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class RestaurantCreationRequest {
-    private int categoryId;
+    private Long categoryId;
     private String contact;
     private String dong;
     private String imageUrl;

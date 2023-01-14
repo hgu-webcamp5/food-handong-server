@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class RestaurantController {
     private final RestaurantService restaurantService;
@@ -34,6 +35,8 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody RestaurantCreationRequest request) {
         return ResponseEntity.ok(restaurantService.createRestaurant(request));
     }
+
+    @DeleteMapping("/restaurant/{restaurantId}")
 
     @PostMapping("/restaurant/like")
     public ResponseEntity<Like> likeRestaurant(@RequestBody LikedRestaurantRequest request) {
@@ -62,4 +65,10 @@ public class RestaurantController {
         restaurantService.deleteRestaurant(restaurantId);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/restaurant/{restaurantId}")
+    public ResponseEntity<Restaurant> updateRestaurant(@RequestBody RestaurantCreationRequest request , @PathVariable Long restaurantId){
+        return ResponseEntity.ok(restaurantService.updateRestaurant(restaurantId, request));
+    }
+
 }
