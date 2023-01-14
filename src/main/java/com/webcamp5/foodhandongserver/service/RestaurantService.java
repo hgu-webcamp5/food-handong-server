@@ -5,6 +5,7 @@ import com.webcamp5.foodhandongserver.model.Restaurant;
 import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
 import com.webcamp5.foodhandongserver.repository.CategoryRepository;
 import com.webcamp5.foodhandongserver.repository.RestaurantRepository;
+import com.webcamp5.foodhandongserver.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
