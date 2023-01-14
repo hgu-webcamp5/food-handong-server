@@ -1,5 +1,7 @@
 package com.webcamp5.foodhandongserver.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,10 +12,11 @@ import lombok.Setter;
 @Entity
 @Table(name = "restaurant")
 public class Restaurant {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int categoryId;
+//    private Long categoryId;
     private String contact;
     private String dong;
     private String imageUrl;
@@ -23,4 +26,10 @@ public class Restaurant {
     private String name;
     private String officialName;
     private String openingHours;
+
+    @ManyToOne
+    @JoinColumn(name ="category_id")
+    @JsonManagedReference
+    private Category category;
 }
+
