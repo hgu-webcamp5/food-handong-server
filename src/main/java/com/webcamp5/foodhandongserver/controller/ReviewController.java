@@ -2,6 +2,7 @@ package com.webcamp5.foodhandongserver.controller;
 
 import com.webcamp5.foodhandongserver.model.Review;
 import com.webcamp5.foodhandongserver.model.request.ReviewCreationRequest;
+import com.webcamp5.foodhandongserver.model.request.ReviewReadRequest;
 import com.webcamp5.foodhandongserver.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
@@ -21,7 +23,7 @@ public class ReviewController {
     }
 
     @GetMapping("/review/{restaurantId}")
-    public ResponseEntity<List<Review>> readReviewsRes(@PathVariable int restaurantId) {
+    public ResponseEntity<List<ReviewReadRequest>> readReviewsRes(@PathVariable int restaurantId) {
         return ResponseEntity.ok(reviewService.readReviewsRes(restaurantId));
     }
 
