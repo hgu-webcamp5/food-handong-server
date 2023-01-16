@@ -1,6 +1,11 @@
 package com.webcamp5.foodhandongserver.model.request;
 
+import com.webcamp5.foodhandongserver.model.Menu;
+import com.webcamp5.foodhandongserver.model.Restaurant;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class RestaurantCreationRequest {
@@ -14,4 +19,6 @@ public class RestaurantCreationRequest {
     private String name;
     private String officialName;
     private String openingHours;
+    private List<Menu> menus= new ArrayList<>();;
+
 }

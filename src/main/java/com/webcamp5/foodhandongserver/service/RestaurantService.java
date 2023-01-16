@@ -1,11 +1,11 @@
 package com.webcamp5.foodhandongserver.service;
 
 import com.webcamp5.foodhandongserver.model.Category;
+import com.webcamp5.foodhandongserver.model.Menu;
 import com.webcamp5.foodhandongserver.model.Restaurant;
 import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
 import com.webcamp5.foodhandongserver.repository.CategoryRepository;
 import com.webcamp5.foodhandongserver.repository.RestaurantRepository;
-import com.webcamp5.foodhandongserver.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -21,16 +21,35 @@ public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final CategoryRepository categoryRepository;
 
+
+//    public Restaurant createRestaurant(RestaurantCreationRequest request){
+//        Restaurant restaurant = Restaurant.createRestaurant(
+//            request.getContact(), request.getDong(), request.getImageUrl()
+//            ,request.getLatitude(), request.getLongitude(), request.getLocation()
+//            ,request.getName(),request.getOfficialName(),request.getOpeningHours()
+//        );
+//        List<Menu> menus = request.getMenus();
+//
+//        for(Menu menudto : menus){
+//            Menu menu = Menu.createMenu(menudto.getName(),menudto.getPrice() , menudto.getImageUrl() , restaurant);
+//            restaurant.putMenu(menu);
+//        }
+//        return restaurantRepository.save(restaurant);
+//    }
+
+
+
     public Restaurant readRestaurant(Long id) {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+
         if (restaurant.isPresent()) {
             return restaurant.get();
         }
 
         throw new EntityNotFoundException("Cant find any restaurant under given ID");
     }
-
     public List<Restaurant> readRestaurants() {
+
         return restaurantRepository.findAll();
     }
 
@@ -42,12 +61,23 @@ public class RestaurantService {
                     "Category Not Found");
         }
 
+
+
         Restaurant restaurantToCreate = new Restaurant();
         BeanUtils.copyProperties(restaurant, restaurantToCreate);
         restaurantToCreate.setCategory(category.get());
+
+        List<Menu> menus = restaurant.getMenus();
+        for(Menu menuDTO : menus){
+//            Menu menu = new Menu(menuDTO.getName(),menuDTO.getPrice() , menuDTO.getImageUrl() , restaurantToCreate);
+            menuDTO.setRestaurant(restaurantToCreate);
+        }
+
+
         return restaurantRepository.save(restaurantToCreate);
 
     }
+
 
     public void deleteRestaurant(Long id) {
         restaurantRepository.deleteById(id);
