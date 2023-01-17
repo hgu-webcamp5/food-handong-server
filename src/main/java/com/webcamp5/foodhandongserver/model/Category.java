@@ -18,11 +18,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String createdTime;
-    private String modifiedTime;
+//    private String createdTime;
+//    private String modifiedTime;
 
     @JsonBackReference
     @OneToMany(mappedBy = "category",
-                fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL)
     private List<Restaurant> restaurants;
 }

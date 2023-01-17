@@ -12,6 +12,7 @@ import java.awt.print.Book;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin
 @RequiredArgsConstructor
 public class RestaurantController {
     private final RestaurantService restaurantService;

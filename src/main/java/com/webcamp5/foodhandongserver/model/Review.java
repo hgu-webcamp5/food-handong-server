@@ -1,5 +1,6 @@
 package com.webcamp5.foodhandongserver.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,5 +20,10 @@ public class Review {
 //    private java.sql.Timestamp createdTime;
 //    private java.sql.Timestamp  modifiedTime;
     private short isDeleted;
+
+//    @ManyToOne
+//    @JsonIgnore
+//    @JoinColumn(name = "restaurant_id")
+//    private Restaurant restaurant;
 
 }
