@@ -1,9 +1,6 @@
 package com.webcamp5.foodhandongserver.service;
 
-import com.webcamp5.foodhandongserver.model.Category;
-import com.webcamp5.foodhandongserver.model.Menu;
-import com.webcamp5.foodhandongserver.model.Restaurant;
-import com.webcamp5.foodhandongserver.model.Review;
+import com.webcamp5.foodhandongserver.model.*;
 import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
 import com.webcamp5.foodhandongserver.repository.CategoryRepository;
 import com.webcamp5.foodhandongserver.model.request.LikedRestaurantRequest;
@@ -55,6 +52,8 @@ public class RestaurantService {
 
         double sum = 0;
         double average = 0;
+        int likeSum = 0;
+
         List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurant.get().getId().intValue());
         restaurant.get().setComment(reviewList.size());
 
@@ -70,6 +69,16 @@ public class RestaurantService {
             return restaurant.get();
         }
 
+        List<Like> likeList = likeRepository.findAllByRestaurantId(restaurant.get().getId());
+
+        for(Like like : likeList){
+            if(like.getIsCancelled() == true) continue;
+            likeSum += 1;
+        }
+
+        restaurant.get().setHeart(likeSum);
+
+
         throw new EntityNotFoundException("Cant find any restaurant under given ID");
     }
     public List<Restaurant> readRestaurants() {
@@ -79,6 +88,8 @@ public class RestaurantService {
         for(Restaurant restaurant : restList){
             double sum = 0;
             double average = 0;
+            int likeSum = 0;
+
             List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurant.getId().intValue());
             restaurant.setComment(reviewList.size());
 
@@ -89,6 +100,15 @@ public class RestaurantService {
             if(reviewList.size() != 0) average =  sum / reviewList.size();
             average= (double)Math.round(average*10)/10;
             restaurant.setRate(average);
+
+            List<Like> likeList = likeRepository.findAllByRestaurantId(restaurant.getId());
+
+            for(Like like : likeList){
+                if(like.getIsCancelled() == true) continue;
+                likeSum += 1;
+            }
+
+            restaurant.setHeart(likeSum);
 
         }
 

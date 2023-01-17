@@ -20,11 +20,11 @@ import java.util.List;
 public class RestaurantController {
     private final RestaurantService restaurantService;
 
-    @GetMapping("/restaurant")
-    public ResponseEntity readRestaurants() {
-
-        return ResponseEntity.ok(restaurantService.readRestaurants());
-    }
+//    @GetMapping("/restaurant")
+//    public ResponseEntity readRestaurants() {
+//
+//        return ResponseEntity.ok(restaurantService.readRestaurants());
+//    }
 
     @GetMapping("/restaurant/{restaurantId}")
     public ResponseEntity<Restaurant> readRestaurant(@PathVariable Long restaurantId) {

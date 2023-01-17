@@ -49,6 +49,7 @@ public class Restaurant {
 
     private double rate;
     private int comment;
+    private int heart;
 //    @JsonIgnore(value = false)
 //    @OneToMany(mappedBy = "restaurant",
 //            cascade = CascadeType.ALL)
