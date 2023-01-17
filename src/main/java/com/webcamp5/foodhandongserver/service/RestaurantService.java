@@ -27,28 +27,8 @@ public class RestaurantService {
 
     private final ReviewRepository reviewRepository;
 
-
-//    public Restaurant createRestaurant(RestaurantCreationRequest request){
-//        Restaurant restaurant = Restaurant.createRestaurant(
-//            request.getContact(), request.getDong(), request.getImageUrl()
-//            ,request.getLatitude(), request.getLongitude(), request.getLocation()
-//            ,request.getName(),request.getOfficialName(),request.getOpeningHours()
-//        );
-//        List<Menu> menus = request.getMenus();
-//
-//        for(Menu menudto : menus){
-//            Menu menu = Menu.createMenu(menudto.getName(),menudto.getPrice() , menudto.getImageUrl() , restaurant);
-//            restaurant.putMenu(menu);
-//        }
-//        return restaurantRepository.save(restaurant);
-//    }
-
-
-
     public Restaurant readRestaurant(Long id) {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
-
-//        restaurant.get().setReviews(reviewRepository.findAllByRestaurantId(id.intValue()).size());
 
         double sum = 0;
         double average = 0;
@@ -123,15 +103,12 @@ public class RestaurantService {
                     "Category Not Found");
         }
 
-
-
         Restaurant restaurantToCreate = new Restaurant();
         BeanUtils.copyProperties(restaurant, restaurantToCreate);
         restaurantToCreate.setCategory(category.get());
 
         List<Menu> menus = restaurant.getMenus();
         for(Menu menuDTO : menus){
-//            Menu menu = new Menu(menuDTO.getName(),menuDTO.getPrice() , menuDTO.getImageUrl() , restaurantToCreate);
             menuDTO.setRestaurant(restaurantToCreate);
         }
 
@@ -152,8 +129,6 @@ public class RestaurantService {
         }
 
         Restaurant restaurant = optionalRestaurant.get();
-
-//        restaurant.setCategoryId(request.getCategoryId());
         restaurant.setContact(request.getContact());
         restaurant.setDong(request.getDong());
         restaurant.setImageUrl(request.getImageUrl());

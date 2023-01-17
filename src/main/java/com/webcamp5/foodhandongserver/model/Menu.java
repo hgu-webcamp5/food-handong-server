@@ -33,24 +33,4 @@ public class Menu {
     public Menu() {}
 
 
-//    @Builder
-//    public Menu(String name , int price , String imageUrl , Restaurant restaurant){
-//        this.name = name;
-//        this.price = price;
-//        this.imageUrl = imageUrl;
-//        this.restaurant = restaurant;
-//    }
-//
-//
-//
-//    public static Menu createMenu(String name,int price , String imageUrl  ,Restaurant restaurant){
-//        return Menu.builder()
-//                .name(name)
-//                  .price(price)
-//                  .imageUrl(imageUrl)
-//                .restaurant(restaurant)
-//                .build();
-//    }
-
-
 }
