@@ -36,7 +36,6 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.createRestaurant(request));
     }
 
-    @DeleteMapping("/restaurant/{restaurantId}")
 
     @PostMapping("/restaurant/like")
     public ResponseEntity<Like> likeRestaurant(@RequestBody LikedRestaurantRequest request) {
@@ -60,7 +59,7 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.readRestaurant(id));
     }
 
-    @DeleteMapping("/book/{restaurantId}")
+    @DeleteMapping("/restaurant/{restaurantId}")
     public ResponseEntity<Void> deleteRestaurant(@PathVariable Long restaurantId) {
         restaurantService.deleteRestaurant(restaurantId);
         return ResponseEntity.ok().build();
