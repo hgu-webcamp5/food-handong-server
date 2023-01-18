@@ -17,14 +17,23 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @GetMapping("/review")
-    public ResponseEntity readReviewsAll() {
-        return ResponseEntity.ok(reviewService.readReviewsAll());
-    }
+//    @GetMapping("/review")
+//    public ResponseEntity readReviewsAll() {
+//        return ResponseEntity.ok(reviewService.readReviewsAll());
+//    }
 
     @GetMapping("/review/{restaurantId}")
     public ResponseEntity<List<ReviewReadRequest>> readReviewsRes(@PathVariable int restaurantId) {
         return ResponseEntity.ok(reviewService.readReviewsRes(restaurantId));
+    }
+
+    // 회원 ID로 해당 회원이 등록한 리뷰 조회
+    @GetMapping("/review")
+    public ResponseEntity readReviewsAll(@RequestParam(required = false) Long userId) {
+        if (userId == null) {
+            return ResponseEntity.ok(reviewService.readReviewsAll());
+        }
+        return ResponseEntity.ok(reviewService.readLikedReview(userId));
     }
 
     @PostMapping("/review")

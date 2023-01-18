@@ -1,14 +1,13 @@
 package com.webcamp5.foodhandongserver.service;
 
 import com.webcamp5.foodhandongserver.model.Category;
+import com.webcamp5.foodhandongserver.model.Like;
 import com.webcamp5.foodhandongserver.model.Restaurant;
-import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
+import com.webcamp5.foodhandongserver.model.request.*;
 import com.webcamp5.foodhandongserver.repository.CategoryRepository;
-import com.webcamp5.foodhandongserver.model.request.LikedRestaurantRequest;
 import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
 import com.webcamp5.foodhandongserver.repository.LikeRepository;
 import com.webcamp5.foodhandongserver.repository.RestaurantRepository;
-import com.webcamp5.foodhandongserver.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -84,16 +83,19 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
 
     }
+    // 식당 좋아요 POST
     public Like likeRestaurant(LikedRestaurantRequest like) {
         Like likedRestaurant = new Like();
         BeanUtils.copyProperties(like, likedRestaurant);
         likedRestaurant.setIsCancelled(false);
         return likeRepository.save(likedRestaurant);
     }
+    // 식당 좋아요 GET
     public List<Like> readlike() {
         return likeRepository.findAll();
     }
 
+    //식당 좋아요 취소
     public Like unlikeRestaurant(LikedRestaurantRequest like) {
         Like likedRestaurant = new Like();
         BeanUtils.copyProperties(like, likedRestaurant);
@@ -101,4 +103,19 @@ public class RestaurantService {
         return likeRepository.save(likedRestaurant);
     }
 
+    // 회원 ID로 해당 회원이 좋아한 식당 조회
+    public List<ReadLikedRequest> readLikedRestaurant(Long userId) {
+        List<Like> restaurant = likeRepository.findAllByUserId(userId);
+        if(!restaurant.isEmpty()) {
+            List<ReadLikedRequest> result = new ArrayList<>();
+            restaurant.forEach(review -> {
+                ReadLikedRequest reviewObj = new ReadLikedRequest();
+                BeanUtils.copyProperties(review,reviewObj);
+
+                result.add(reviewObj);
+            });
+            return result;
+        }
+        throw new EntityNotFoundException("Cant find any restaurant under given ID");
+    }
 }
