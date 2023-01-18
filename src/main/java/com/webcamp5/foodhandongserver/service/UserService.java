@@ -22,14 +22,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User readUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return user.get();
-        }
-
-        throw new EntityNotFoundException("Cant find any user under given ID");
-    }
 
     public User readUserByUserId(String userId) {
         Optional<User> user = userRepository.findByUserId(userId);
@@ -37,9 +29,17 @@ public class UserService {
             return user.get();
         }
 
-        throw new EntityNotFoundException("Cant find any user under given ID");
+        throw new EntityNotFoundException("Can't find any user under given ID");
     }
 
+    public User readUserByPassword(String password) {
+        Optional<User> user = userRepository.findByPassword(password);
+        if (user.isPresent()) {
+            return user.get();
+        }
+
+        throw new EntityNotFoundException("Can't find any user under given Password");
+    }
     public User createUser(UserCreationRequest user){
         User userToCreate = new User();
         BeanUtils.copyProperties(user, userToCreate);
@@ -62,6 +62,7 @@ public class UserService {
         user.setProfileUrl(request.getProfileUrl());
         user.setNickname(request.getNickname());
         user.setUserId(request.getUserId());
+        user.setPassword(request.getPassword());
         user.setLoginCount(request.getLoginCount());
         return userRepository.save(user);
     }
