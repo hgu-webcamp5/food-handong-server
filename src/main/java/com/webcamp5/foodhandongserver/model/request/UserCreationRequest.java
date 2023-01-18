@@ -9,5 +9,6 @@ public class UserCreationRequest {
     private String profileUrl;
     private String nickname;
     private String userId;
+    private String password;
     private int loginCount;
 }
