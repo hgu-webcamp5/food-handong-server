@@ -22,8 +22,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User readUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
+    public User readUser(String id) {
+        Optional<User> user = userRepository.findByUserId(id);
         if (user.isPresent()) {
             return user.get();
         }

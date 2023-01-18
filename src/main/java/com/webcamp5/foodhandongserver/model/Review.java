@@ -19,7 +19,7 @@ public class Review {
     private String review;
     private double rating;
     private String imageUrl;
-    private Long userId;
+    private String userId;
     private Timestamp createdTime;
     private Timestamp  modifiedTime;
     private boolean isDeleted;

@@ -6,6 +6,6 @@ import lombok.Data;
 public class ReadLikedRequest {
     private Long id;
     private Boolean isCancelled;
-    private Long userId;
+    private String userId;
     private Long restaurantId;
 }

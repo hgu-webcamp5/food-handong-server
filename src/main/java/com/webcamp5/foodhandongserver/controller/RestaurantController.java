@@ -57,7 +57,7 @@ public class RestaurantController {
 
     // 회원 ID로 해당 회원이 좋아한 식당 조회
     @GetMapping("/restaurant")
-    public ResponseEntity readRestaurants(@RequestParam(required = false) Long userId) {
+    public ResponseEntity readRestaurants(@RequestParam(required = false) String userId) {
         if (userId == null) {
             return ResponseEntity.ok(restaurantService.readRestaurants());
         }
