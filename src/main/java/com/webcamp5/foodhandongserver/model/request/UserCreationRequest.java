@@ -8,6 +8,6 @@ public class UserCreationRequest {
     private String email;
     private String profileUrl;
     private String nickname;
-    private String uid;
+    private String userId;
     private int loginCount;
 }

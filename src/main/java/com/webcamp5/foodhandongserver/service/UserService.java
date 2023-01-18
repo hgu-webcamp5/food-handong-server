@@ -31,6 +31,15 @@ public class UserService {
         throw new EntityNotFoundException("Cant find any user under given ID");
     }
 
+    public User readUserByUserId(String userId) {
+        Optional<User> user = userRepository.findByUserId(userId);
+        if (user.isPresent()) {
+            return user.get();
+        }
+
+        throw new EntityNotFoundException("Cant find any user under given ID");
+    }
+
     public User createUser(UserCreationRequest user){
         User userToCreate = new User();
         BeanUtils.copyProperties(user, userToCreate);
@@ -52,7 +61,7 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setProfileUrl(request.getProfileUrl());
         user.setNickname(request.getNickname());
-        user.setUid((request.getUid()));
+        user.setUserId(request.getUserId());
         user.setLoginCount(request.getLoginCount());
         return userRepository.save(user);
     }
