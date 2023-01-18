@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -19,8 +20,8 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<User> readUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(userService.readUser(userId));
+    public ResponseEntity<User> readUser(@PathVariable String userId) {
+        return ResponseEntity.ok(userService.readUserByUserId(userId));
     }
 
     @PostMapping("/user")

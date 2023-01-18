@@ -4,6 +4,7 @@ import com.webcamp5.foodhandongserver.model.Like;
 import com.webcamp5.foodhandongserver.model.Restaurant;
 import com.webcamp5.foodhandongserver.model.request.LikedRestaurantRequest;
 import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
+import com.webcamp5.foodhandongserver.model.request.ReviewReadRequest;
 import com.webcamp5.foodhandongserver.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,26 +38,30 @@ public class RestaurantController {
     }
 
 
+    // 식당 좋아요 POST
     @PostMapping("/restaurant/like")
     public ResponseEntity<Like> likeRestaurant(@RequestBody LikedRestaurantRequest request) {
         return ResponseEntity.ok(restaurantService.likeRestaurant(request));
     }
+    // 식당 좋아요 GET
     @GetMapping("/restaurant/like")
     public ResponseEntity readlike() {
         return ResponseEntity.ok(restaurantService.readlike());
     }
 
+    //식당 좋아요 취소
     @PatchMapping("/restaurant/unlike")
     public ResponseEntity<Like> unlikeRestaurant(@RequestBody LikedRestaurantRequest request) {
         return ResponseEntity.ok(restaurantService.unlikeRestaurant(request));
     }
 
+    // 회원 ID로 해당 회원이 좋아한 식당 조회
     @GetMapping("/restaurant")
-    public ResponseEntity userLikeRestaurant(@RequestParam(required = false) Long id) {
-        if (id == null) {
+    public ResponseEntity readRestaurants(@RequestParam(required = false) Long userId) {
+        if (userId == null) {
             return ResponseEntity.ok(restaurantService.readRestaurants());
         }
-        return ResponseEntity.ok(restaurantService.readRestaurant(id));
+        return ResponseEntity.ok(restaurantService.readLikedRestaurant(userId));
     }
 
     @DeleteMapping("/restaurant/{restaurantId}")
