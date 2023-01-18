@@ -23,6 +23,7 @@ public class RestaurantController {
 
 //    @GetMapping("/restaurant")
 //    public ResponseEntity readRestaurants() {
+//
 //        return ResponseEntity.ok(restaurantService.readRestaurants());
 //    }
 
@@ -35,6 +36,7 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody RestaurantCreationRequest request) {
         return ResponseEntity.ok(restaurantService.createRestaurant(request));
     }
+
 
     // 식당 좋아요 POST
     @PostMapping("/restaurant/like")
@@ -61,7 +63,6 @@ public class RestaurantController {
         }
         return ResponseEntity.ok(restaurantService.readLikedRestaurant(userId));
     }
-
 
     @DeleteMapping("/restaurant/{restaurantId}")
     public ResponseEntity<Void> deleteRestaurant(@PathVariable Long restaurantId) {

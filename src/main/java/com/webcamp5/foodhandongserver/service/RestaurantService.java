@@ -1,13 +1,12 @@
 package com.webcamp5.foodhandongserver.service;
 
-import com.webcamp5.foodhandongserver.model.Category;
-import com.webcamp5.foodhandongserver.model.Like;
-import com.webcamp5.foodhandongserver.model.Restaurant;
+import com.webcamp5.foodhandongserver.model.*;
 import com.webcamp5.foodhandongserver.model.request.*;
 import com.webcamp5.foodhandongserver.repository.CategoryRepository;
 import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
 import com.webcamp5.foodhandongserver.repository.LikeRepository;
 import com.webcamp5.foodhandongserver.repository.RestaurantRepository;
+import com.webcamp5.foodhandongserver.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -25,16 +24,73 @@ public class RestaurantService {
     private final CategoryRepository categoryRepository;
     private final LikeRepository likeRepository;
 
+    private final ReviewRepository reviewRepository;
+
     public Restaurant readRestaurant(Long id) {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+
+        double sum = 0;
+        double average = 0;
+        int likeSum = 0;
+
+        List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurant.get().getId().intValue());
+        restaurant.get().setComment(reviewList.size());
+
+        for(Review review : reviewList){
+            sum += review.getRating();
+        }
+
+        if(reviewList.size() != 0) average =  sum / reviewList.size();
+        average= (double)Math.round(average*10)/10;
+        restaurant.get().setRate(average);
+
         if (restaurant.isPresent()) {
             return restaurant.get();
         }
 
+        List<Like> likeList = likeRepository.findAllByRestaurantId(restaurant.get().getId());
+
+        for(Like like : likeList){
+            if(like.getIsCancelled() == true) continue;
+            likeSum += 1;
+        }
+
+        restaurant.get().setHeart(likeSum);
+
+
         throw new EntityNotFoundException("Cant find any restaurant under given ID");
     }
-
     public List<Restaurant> readRestaurants() {
+
+        List<Restaurant> restList = restaurantRepository.findAll();
+
+        for(Restaurant restaurant : restList){
+            double sum = 0;
+            double average = 0;
+            int likeSum = 0;
+
+            List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurant.getId().intValue());
+            restaurant.setComment(reviewList.size());
+
+            for(Review review : reviewList){
+                sum += review.getRating();
+            }
+
+            if(reviewList.size() != 0) average =  sum / reviewList.size();
+            average= (double)Math.round(average*10)/10;
+            restaurant.setRate(average);
+
+            List<Like> likeList = likeRepository.findAllByRestaurantId(restaurant.getId());
+
+            for(Like like : likeList){
+                if(like.getIsCancelled() == true) continue;
+                likeSum += 1;
+            }
+
+            restaurant.setHeart(likeSum);
+
+        }
+
         return restaurantRepository.findAll();
     }
 
@@ -49,9 +105,16 @@ public class RestaurantService {
         Restaurant restaurantToCreate = new Restaurant();
         BeanUtils.copyProperties(restaurant, restaurantToCreate);
         restaurantToCreate.setCategory(category.get());
+
+        List<Menu> menus = restaurant.getMenus();
+        for(Menu menuDTO : menus){
+            menuDTO.setRestaurant(restaurantToCreate);
+        }
+
         return restaurantRepository.save(restaurantToCreate);
 
     }
+
 
     public void deleteRestaurant(Long id) {
         restaurantRepository.deleteById(id);
@@ -65,8 +128,6 @@ public class RestaurantService {
         }
 
         Restaurant restaurant = optionalRestaurant.get();
-
-//        restaurant.setCategoryId(request.getCategoryId());
         restaurant.setContact(request.getContact());
         restaurant.setDong(request.getDong());
         restaurant.setImageUrl(request.getImageUrl());
