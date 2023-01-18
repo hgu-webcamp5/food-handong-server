@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Data
 public class ReviewReadRequest {
     private Long id;
-    private int restaurantId;
+    private Long restaurantId;
     private String review;
     private double rating;
     private String imageUrl;
