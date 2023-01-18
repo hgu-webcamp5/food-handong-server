@@ -20,8 +20,14 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<User> readUser(@PathVariable String userId) {
+    public ResponseEntity<User> readUserById(@PathVariable String userId) {
         return ResponseEntity.ok(userService.readUserByUserId(userId));
+    }
+
+    @GetMapping("/user/{userId}/{userPassword}")
+    public ResponseEntity<User> readUserByPassword(@PathVariable("userId") String userId, @PathVariable("userPassword") String userPassword) {
+        readUserById(userId);
+        return ResponseEntity.ok(userService.readUserByPassword(userPassword));
     }
 
     @PostMapping("/user")
