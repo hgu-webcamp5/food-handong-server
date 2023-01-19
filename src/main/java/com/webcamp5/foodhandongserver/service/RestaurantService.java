@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,10 +42,6 @@ public class RestaurantService {
         average= (double)Math.round(average*10)/10;
         restaurant.get().setRate(average);
 
-        if (restaurant.isPresent()) {
-            return restaurant.get();
-        }
-
         List<Like> likeList = likeRepository.findAllByRestaurantId(restaurant.get().getId());
 
         for(Like like : likeList){
@@ -54,6 +51,9 @@ public class RestaurantService {
 
         restaurant.get().setHeart(likeSum);
 
+        if (restaurant.isPresent()) {
+            return restaurant.get();
+        }
 
         throw new EntityNotFoundException("Cant find any restaurant under given ID");
     }
@@ -155,10 +155,19 @@ public class RestaurantService {
 
     //식당 좋아요 취소
     public Like unlikeRestaurant(LikedRestaurantRequest like) {
-        Like likedRestaurant = new Like();
-        BeanUtils.copyProperties(like, likedRestaurant);
-        likedRestaurant.setIsCancelled(true);
-        return likeRepository.save(likedRestaurant);
+        List<Like> likedRestaurants = likeRepository.findAllByRestaurantId(like.getRestaurantId());
+
+        Collections.reverse(likedRestaurants);
+
+        for(Like likeRestaurant : likedRestaurants){
+            if (likeRestaurant.getUserId().equals(like.getUserId())) {
+                Like updateLike = likeRepository.findById(likeRestaurant.getId()).get();
+                updateLike.setIsCancelled(true);
+                return likeRepository.save(likeRestaurant);
+            }
+        }
+
+        throw new EntityNotFoundException("Like not present in the database");
     }
 
     // 회원 ID로 해당 회원이 좋아한 식당 조회
