@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -161,15 +162,16 @@ public class RestaurantService {
     }
 
     // 회원 ID로 해당 회원이 좋아한 식당 조회
-    public List<ReadLikedRequest> readLikedRestaurant(String userId) {
+    public List<LikedRestaurantResponse> readLikedRestaurant(String userId) {
         List<Like> restaurant = likeRepository.findAllByUserId(userId);
         if(!restaurant.isEmpty()) {
-            List<ReadLikedRequest> result = new ArrayList<>();
+            List<LikedRestaurantResponse> result = new ArrayList<>();
             restaurant.forEach(review -> {
-                ReadLikedRequest reviewObj = new ReadLikedRequest();
-                BeanUtils.copyProperties(review,reviewObj);
-
-                result.add(reviewObj);
+                Restaurant obj = readRestaurant(review.getRestaurantId());
+                LikedRestaurantResponse obj2 = new LikedRestaurantResponse();
+                BeanUtils.copyProperties(obj, obj2);
+                obj2.setCancelled(review.getIsCancelled());
+                result.add(obj2);
             });
             return result;
         }
