@@ -26,7 +26,7 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
-    public List<ReviewReadRequest> readReviewsRes(int restaurantId) {
+    public List<ReviewReadRequest> readReviewsRes(Long restaurantId) {
         List<Review> reviews = reviewRepository.findAllByRestaurantId(restaurantId);
 
         if(!reviews.isEmpty()) {
@@ -44,7 +44,7 @@ public class ReviewService {
         throw new EntityNotFoundException("Can't find any review under given restaurantId");
     }
     // 회원 ID로 해당 회원이 등록한 리뷰 조회
-    public List<ReviewReadRequest> readLikedReview(Long userId) {
+    public List<ReviewReadRequest> readLikedReview(String userId) {
         List<Review> reviews = reviewRepository.findAllByUserId(userId);
 
         if(!reviews.isEmpty()) {

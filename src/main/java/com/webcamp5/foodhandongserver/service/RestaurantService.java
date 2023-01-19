@@ -2,11 +2,7 @@ package com.webcamp5.foodhandongserver.service;
 
 import com.webcamp5.foodhandongserver.model.*;
 import com.webcamp5.foodhandongserver.model.request.*;
-import com.webcamp5.foodhandongserver.repository.CategoryRepository;
-import com.webcamp5.foodhandongserver.model.request.RestaurantCreationRequest;
-import com.webcamp5.foodhandongserver.repository.LikeRepository;
-import com.webcamp5.foodhandongserver.repository.RestaurantRepository;
-import com.webcamp5.foodhandongserver.repository.ReviewRepository;
+import com.webcamp5.foodhandongserver.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -33,7 +29,7 @@ public class RestaurantService {
         double average = 0;
         int likeSum = 0;
 
-        List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurant.get().getId().intValue());
+        List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurant.get().getId());
         restaurant.get().setComment(reviewList.size());
 
         for(Review review : reviewList){
@@ -69,7 +65,7 @@ public class RestaurantService {
             double average = 0;
             int likeSum = 0;
 
-            List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurant.getId().intValue());
+            List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurant.getId());
             restaurant.setComment(reviewList.size());
 
             for(Review review : reviewList){
@@ -165,7 +161,7 @@ public class RestaurantService {
     }
 
     // 회원 ID로 해당 회원이 좋아한 식당 조회
-    public List<ReadLikedRequest> readLikedRestaurant(Long userId) {
+    public List<ReadLikedRequest> readLikedRestaurant(String userId) {
         List<Like> restaurant = likeRepository.findAllByUserId(userId);
         if(!restaurant.isEmpty()) {
             List<ReadLikedRequest> result = new ArrayList<>();

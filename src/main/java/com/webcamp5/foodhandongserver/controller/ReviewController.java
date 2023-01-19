@@ -23,13 +23,13 @@ public class ReviewController {
 //    }
 
     @GetMapping("/review/{restaurantId}")
-    public ResponseEntity<List<ReviewReadRequest>> readReviewsRes(@PathVariable int restaurantId) {
+    public ResponseEntity<List<ReviewReadRequest>> readReviewsRes(@PathVariable Long restaurantId) {
         return ResponseEntity.ok(reviewService.readReviewsRes(restaurantId));
     }
 
     // 회원 ID로 해당 회원이 등록한 리뷰 조회
     @GetMapping("/review")
-    public ResponseEntity readReviewsAll(@RequestParam(required = false) Long userId) {
+    public ResponseEntity readReviewsAll(@RequestParam(required = false) String userId) {
         if (userId == null) {
             return ResponseEntity.ok(reviewService.readReviewsAll());
         }

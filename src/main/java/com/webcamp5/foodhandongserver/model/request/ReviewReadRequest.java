@@ -11,11 +11,11 @@ import java.sql.Timestamp;
 @Data
 public class ReviewReadRequest {
     private Long id;
-    private int restaurantId;
+    private Long restaurantId;
     private String review;
     private double rating;
     private String imageUrl;
-    private Long userId;
+    private String userId;
     private Timestamp createdTime;
     private Timestamp  modifiedTime;
     private boolean isDeleted;

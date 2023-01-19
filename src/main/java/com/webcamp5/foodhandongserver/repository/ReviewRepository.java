@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long>{
-    List<Review> findAllByRestaurantId(int restaurantId);
-    List<Review> findAllByUserId(Long userId);
+    List<Review> findAllByRestaurantId(Long restaurantId);
+    List<Review> findAllByUserId(String userId);
 }

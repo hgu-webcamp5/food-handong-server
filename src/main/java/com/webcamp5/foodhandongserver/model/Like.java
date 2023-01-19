@@ -13,6 +13,6 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean isCancelled;
-    private Long userId;
+    private String userId;
     private Long restaurantId;
 }
